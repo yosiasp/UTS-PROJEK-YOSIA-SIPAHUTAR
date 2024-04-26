@@ -10,13 +10,47 @@ const { errorResponder, errorTypes } = require('../../../core/errors');
  */
 async function getUsers(request, response, next) {
   try {
-    const users = await usersService.getUsers();
-    return response.status(200).json(users);
+    const page_number = parseInt(request.query.page_number) || 1;
+    const page_size = parseInt(request.query.page_size) || 20;
+    const sort_by = request.query.sort_by || 'name';
+    const sort_direction = request.query.sort_direction || 'desc';
+    const search = request.query.search || '';
+    const users = await usersService.getUsers(
+      page_size,
+      page_number,
+      sort_by,
+      sort_direction,
+      search
+    );
+
+    const count = users.length;
+    const total_pages = Math.ceil(count / page_size);
+    const has_previous_page = page_number > total_pages;
+    const has_next_page = page_number === total_pages;
+
+    const data = users.map((user) => {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      };
+    });
+
+    const result = {
+      page_number,
+      page_size,
+      count,
+      total_pages,
+      has_previous_page,
+      has_next_page,
+      data,
+    };
+
+    return response.status(200).json(result);
   } catch (error) {
     return next(error);
   }
 }
-
 /**
  * Handle get user detail request
  * @param {object} request - Express request object
