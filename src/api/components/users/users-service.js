@@ -13,8 +13,6 @@ async function getUsers(
   search
 ) {
   let users = await usersRepository.getUsers();
-
-  // Filter users based on search
   if (search) {
     users = users.filter((user) =>
       user.name.toLowerCase().includes(search.toLowerCase())
@@ -32,9 +30,6 @@ async function getUsers(
   const start = (page_number - 1) * page_size;
   const end = start + page_size;
   const paginatedUsers = users.slice(start, end);
-
-
-  
 
   const results = paginatedUsers.map((user) => {
     return {
