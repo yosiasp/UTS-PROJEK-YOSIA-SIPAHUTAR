@@ -33,6 +33,39 @@ async function checkLoginCredentials(email, password) {
   return null;
 }
 
+/**
+ * Get remaining login attempts and time to next attempt.
+ * @param {string} email - Email
+ * @returns {object} An object containing remaining login attempts and time to next attempt.
+ */
+async function getLoginAttemptsAndTime(email) {
+  const user = await authenticationRepository.getUserByEmail(email);
+
+  // Jika pengguna tidak ditemukan, kembalikan null
+  if (!user) {
+    return null;
+  }
+
+  // Jika pengguna ditemukan, hitung waktu yang akan di panggil
+  const now = new Date();
+  const nextAttemptTime = new Date(user.last_login_attempt.getTime() + 60000); // Tambahkan 1 menit ke waktu percobaan login terakhir
+  const timeToNextAttempt = nextAttemptTime - now; // Hitung selisih waktu
+
+  // Jika waktu yang akan di panggil masih lebih dari 0, kembalikan waktu yang akan di panggil
+  if (timeToNextAttempt > 0) {
+    return {
+      remainingAttempts: user.login_attempts,
+      timeToNextAttempt: timeToNextAttempt,
+    };
+  }
+
+  // Jika waktu yang akan di panggil sudah 0, reset jumlah percobaan login dan waktu percobaan login terakhir
+  await authenticationRepository.resetLoginAttemptsAndLastLoginAttempt(email);
+
+  return null;
+}
+
 module.exports = {
   checkLoginCredentials,
+  getLoginAttemptsAndTime,
 };
