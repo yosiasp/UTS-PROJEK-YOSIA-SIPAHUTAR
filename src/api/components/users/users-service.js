@@ -42,7 +42,6 @@ async function getUsers(
   return results;
 }
 
-
 /**
  * Get user detail
  * @param {string} id - User ID
