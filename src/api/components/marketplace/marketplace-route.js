@@ -8,10 +8,13 @@ const marketplaceValidator = require('./marketplace-validator');
 const route = express.Router();
 
 module.exports = (app) => {
+
   app.use('/marketplace', route);
+
 
   route.get('/', authenticationMiddleware, marketplaceControllers.getMPs);
 
+  // 
   route.post(
     '/',
     authenticationMiddleware,

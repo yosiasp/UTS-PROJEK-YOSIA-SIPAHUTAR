@@ -22,6 +22,7 @@ async function getMPs() {
   return result;
 }
 
+// Menampilkan barang berdasarkan ID
 async function getMPById(id) {
   const mp = await mpRepository.getMPById(id);
   if (!mp) {
@@ -36,6 +37,7 @@ async function getMPById(id) {
   };
 }
 
+// Mengupdate barang berdasarkan ID
 async function updateMP(id, model, brand, category, price, stock) {
   const mp = await mpRepository.getMPById(id);
   if (!mp) {
@@ -53,7 +55,7 @@ async function updateMP(id, model, brand, category, price, stock) {
   }
   return true;
 }
-
+// Menghapus barang berdasarkan ID
 async function deleteMP(id) {
   const mp = await mpRepository.getMPById(id);
   if (!mp) {
@@ -66,6 +68,7 @@ async function deleteMP(id) {
   return true;
 }
 
+// Menambahkan pembelian barang
 async function createPurchase(model, brand, quantity) {
   const purchase = await mpRepository.createPurchase(model, brand, quantity);
   if (!purchase) {
@@ -74,6 +77,7 @@ async function createPurchase(model, brand, quantity) {
   return true;
 }
 
+// Mengupdate pembelian barang
 async function updatePurchase(id, model, brand, quantity) {
   const purchase = await mpRepository.getPurchaseById(id);
   if (!purchase) {

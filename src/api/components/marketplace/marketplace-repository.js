@@ -1,6 +1,6 @@
 const { Marketplace } = require('../../../models');
 
-// Membuat barang baru
+
 async function createMP(model, brand, category, price, stock) {
   return Marketplace.create({
     model,
@@ -11,17 +11,17 @@ async function createMP(model, brand, category, price, stock) {
   });
 }
 
-// menampilkan semua barang baru
+
 async function getMPs() {
   return Marketplace.find({});
 }
 
-// menampilkan barang berdasarkan id
+
 async function getMPById(id) {
   return Marketplace.findById(id);
 }
 
-// mengupdate barang
+
 async function updateMP(model, brand, category, price, stock) {
   return Marketplace.updateOne(
     {
@@ -38,7 +38,7 @@ async function updateMP(model, brand, category, price, stock) {
   );
 }
 
-// menghapus barang
+
 async function deleteMP(model) {
   return Marketplace.deleteOne({ model });
 }
